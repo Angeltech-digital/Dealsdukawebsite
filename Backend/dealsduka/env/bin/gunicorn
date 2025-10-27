@@ -1,4 +1,4 @@
-#!/home/angela/Angelaprojects/code/Angela/Dealsduka/Backend/dealsduka/env/bin/python3.12
+#!/home/angela/Angelaprojects/code/Angela/Dealsduka/Backend/dealsduka/env/bin/python3.13
 import sys
 from gunicorn.app.wsgiapp import run
 if __name__ == '__main__':
