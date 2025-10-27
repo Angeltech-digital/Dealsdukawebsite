@@ -1,4 +1,4 @@
-#!/home/angela/Angelaprojects/code/Angela/Dealsduka/Backend/dealsduka/env/bin/python
+#!/home/angela/Angelaprojects/code/Angela/Dealsduka/Backend/dealsduka/env/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
