@@ -22,12 +22,20 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from django.http import JsonResponse
+
+
+def health(request):
+    return JsonResponse({'status': 'ok'})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('products.urls')),
     path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # DRF browsable API login (session auth) and simple health check
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/health/', health, name='health'),
 ]
 
 if settings.DEBUG:
