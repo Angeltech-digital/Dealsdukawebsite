@@ -3,14 +3,29 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from accounts.permissions import IsAdminOrReadOnly
 
-from .models import Product, Order, Cart, CartItem, OrderItem, InventoryLog
+from .models import Category, Product, Order, Cart, CartItem, OrderItem, InventoryLog
+from .serializers import (
+    CategorySerializer,
+    ProductSerializer,
+    OrderSerializer,
+    CartSerializer,
+    CartItemSerializer,
+)
 from .serializers import (
     ProductSerializer,
     OrderSerializer,
     CartSerializer,
     CartItemSerializer,
 )
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAdminOrReadOnly]
+    lookup_field = 'slug'
 
 
 class ProductViewSet(viewsets.ModelViewSet):

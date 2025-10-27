@@ -18,21 +18,30 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import routers
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 from django.http import JsonResponse
+from accounts.views import UserManagementViewSet, UserProfileView
+from products.views import CategoryViewSet
 
 
 def health(request):
     return JsonResponse({'status': 'ok'})
+
+router = routers.DefaultRouter()
+router.register(r'api/users', UserManagementViewSet)
+router.register(r'api/categories', CategoryViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('products.urls')),
     path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/auth/register/', include('accounts.urls')),
+    path('api/profile/', UserProfileView.as_view(), name='user-profile'),
     # DRF browsable API login (session auth) and simple health check
     path('api-auth/', include('rest_framework.urls')),
     path('api/health/', health, name='health'),

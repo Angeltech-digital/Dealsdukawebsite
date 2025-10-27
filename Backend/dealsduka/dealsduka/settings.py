@@ -45,9 +45,14 @@ INSTALLED_APPS = [
 # Third-party and local apps for the DealsDuka backend MVP
 INSTALLED_APPS += [
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
+    'accounts',
     'products',
 ]
+
+# Custom user model
+AUTH_USER_MODEL = 'accounts.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
