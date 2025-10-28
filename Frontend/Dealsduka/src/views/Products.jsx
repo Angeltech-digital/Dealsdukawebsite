@@ -51,28 +51,28 @@ const Products = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto px-4 py-12 bg-white/10 backdrop-blur-sm rounded-3xl m-4">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-deals-purple via-deals-orange to-deals-cyan bg-clip-text text-transparent mb-4">
+        <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
           Our Products
         </h1>
-        <p className="text-xl text-gray-700 max-w-2xl mx-auto">
+        <p className="text-xl text-white/90 max-w-2xl mx-auto">
           Discover our amazing collection of tech accessories and gadgets
         </p>
       </div>
 
-      <div className="mb-8 flex flex-wrap gap-4 bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+      <div className="mb-8 flex flex-wrap gap-4 bg-white/20 backdrop-blur-sm p-6 rounded-2xl shadow-lg border border-white/20">
         <input
           type="text"
           placeholder="🔍 Search products..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-1 min-w-64 px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-deals-orange focus:border-transparent transition-all duration-300"
+          className="flex-1 min-w-64 px-4 py-3 border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-deals-orange focus:border-transparent transition-all duration-300 bg-white/10 text-white placeholder-white/70"
         />
         <select
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
-          className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-deals-purple focus:border-transparent transition-all duration-300 bg-white"
+          className="px-4 py-3 border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-deals-purple focus:border-transparent transition-all duration-300 bg-white/10 text-white"
         >
           <option value="">📂 All Categories</option>
           {categories.map((category) => (
@@ -84,7 +84,7 @@ const Products = () => {
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
-          className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-deals-cyan focus:border-transparent transition-all duration-300 bg-white"
+          className="px-4 py-3 border-2 border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-deals-cyan focus:border-transparent transition-all duration-300 bg-white/10 text-white"
         >
           <option value="name">📝 Sort by Name</option>
           <option value="price-low">💰 Price: Low to High</option>
@@ -99,10 +99,10 @@ const Products = () => {
       </div>
 
       {filteredProducts.length === 0 && (
-        <div className="text-center bg-gradient-to-r from-gray-50 to-deals-cyan/10 rounded-2xl p-12 border border-deals-cyan/20">
+        <div className="text-center bg-white/20 backdrop-blur-sm rounded-2xl p-12 border border-white/30">
           <div className="text-6xl mb-4">🔍</div>
-          <p className="text-deals-purple text-xl font-medium">No products match your search criteria.</p>
-          <p className="text-gray-600 mt-2">Try adjusting your filters or search terms.</p>
+          <p className="text-white text-xl font-medium">No products match your search criteria.</p>
+          <p className="text-white/80 mt-2">Try adjusting your filters or search terms.</p>
         </div>
       )}
     </div>

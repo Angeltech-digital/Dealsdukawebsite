@@ -26,21 +26,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-deals-purple via-deals-orange to-deals-cyan py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white/20 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white/20">
         <div className="text-center">
           <div className="mx-auto w-16 h-16 bg-gradient-to-r from-deals-orange to-deals-purple rounded-full flex items-center justify-center mb-4">
             <span className="text-2xl">🔑</span>
           </div>
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-deals-purple to-deals-orange bg-clip-text text-transparent">
+          <h2 className="text-3xl font-bold text-white">
             Welcome Back
           </h2>
-          <p className="text-gray-600 mt-2">Sign in to your DealsDuka account</p>
+          <p className="text-white/90 mt-2">Sign in to your DealsDuka account</p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-1">
                 Email address
               </label>
               <input
@@ -48,14 +48,14 @@ const Login = () => {
                 name="email"
                 type="email"
                 required
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-deals-orange focus:border-transparent transition-all duration-300"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-white/30 rounded-xl placeholder-white/70 text-white bg-white/10 focus:outline-none focus:ring-2 focus:ring-deals-orange focus:border-transparent transition-all duration-300"
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-1">
                 Password
               </label>
               <input
@@ -63,7 +63,7 @@ const Login = () => {
                 name="password"
                 type="password"
                 required
-                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-deals-orange focus:border-transparent transition-all duration-300"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-white/30 rounded-xl placeholder-white/70 text-white bg-white/10 focus:outline-none focus:ring-2 focus:ring-deals-orange focus:border-transparent transition-all duration-300"
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -72,8 +72,8 @@ const Login = () => {
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <p className="text-red-600 text-sm text-center font-medium">
+            <div className="bg-red-500/20 border border-red-400/30 rounded-xl p-4">
+              <p className="text-red-300 text-sm text-center font-medium">
                 {error.detail || 'Login failed. Please try again.'}
               </p>
             </div>
@@ -92,7 +92,7 @@ const Login = () => {
           <div className="text-center">
             <Link
               to="/register"
-              className="font-medium text-deals-purple hover:text-deals-orange transition-colors"
+              className="font-medium text-white/90 hover:text-deals-cyan transition-colors"
             >
               Don't have an account? <span className="font-bold">Sign up</span>
             </Link>

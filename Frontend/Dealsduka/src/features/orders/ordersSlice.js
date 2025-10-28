@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api'; // Adjust to your backend URL
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api'; 
 
 export const placeOrder = createAsyncThunk('orders/placeOrder', async (orderData, { rejectWithValue }) => {
   try {
@@ -21,6 +21,34 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async (_, { re
   try {
     const token = localStorage.getItem('token');
     const response = await axios.get(`${API_BASE_URL}/orders/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const updateOrderStatus = createAsyncThunk('orders/updateOrderStatus', async ({ orderId, status }, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.patch(`${API_BASE_URL}/orders/${orderId}/`, { status }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const checkout = createAsyncThunk('orders/checkout', async (checkoutData, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.post(`${API_BASE_URL}/checkout/`, checkoutData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -68,6 +96,22 @@ const ordersSlice = createSlice({
         state.orders = action.payload;
       })
       .addCase(fetchOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateOrderStatus.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const updatedOrder = action.payload;
+        const index = state.orders.findIndex(order => order.id === updatedOrder.id);
+        if (index !== -1) {
+          state.orders[index] = updatedOrder;
+        }
+      })
+      .addCase(updateOrderStatus.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });

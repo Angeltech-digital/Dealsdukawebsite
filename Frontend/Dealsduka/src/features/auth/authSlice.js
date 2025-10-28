@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8000/api'; // Adjust to your backend URL
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api'; 
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }, { rejectWithValue }) => {
   try {
@@ -33,6 +33,34 @@ export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValu
   }
 });
 
+export const fetchProfile = createAsyncThunk('auth/fetchProfile', async (_, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(`${API_BASE_URL}/profile/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+export const updateProfile = createAsyncThunk('auth/updateProfile', async (profileData, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.put(`${API_BASE_URL}/profile/`, profileData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -40,6 +68,7 @@ const authSlice = createSlice({
     token: localStorage.getItem('token'),
     isLoading: false,
     error: null,
+    isAdmin: false,
   },
   reducers: {
     clearError: (state) => {
@@ -56,6 +85,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isAdmin = action.payload.user.is_staff || action.payload.user.is_superuser; // Assuming backend provides is_staff or is_superuser
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -69,6 +99,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.isAdmin = action.payload.user.is_staff || action.payload.user.is_superuser; // Assuming backend provides is_staff or is_superuser
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -77,6 +108,7 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
+        state.isAdmin = false;
       });
   },
 });
