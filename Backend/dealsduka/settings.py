@@ -91,16 +91,27 @@ WSGI_APPLICATION = 'dealsduka.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-_db_config = dj_database_url.config(conn_max_age=600)
-if _db_config:
-    DATABASES = {'default': _db_config}
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DJANGO_ENV = os.environ.get('DJANGO_ENV', 'development')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
+    'external_db': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dealsduka',
+        'USER': 'angela',
+        'PASSWORD': 'clareAdam24',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
+}
+
+if DJANGO_ENV == 'production':
+    _db_config = dj_database_url.config(conn_max_age=600)
+    if _db_config:
+        DATABASES['external_db'] = _db_config
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
