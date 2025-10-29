@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api/'; 
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {

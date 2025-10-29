@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api';
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api/';
 
 export const fetchCart = createAsyncThunk('cart/fetchCart', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get(`${API_BASE_URL}/carts/`, {
+    const response = await axios.get(`${API_BASE_URL}carts/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -20,7 +20,7 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async (_, { rejectWi
 export const addToCart = createAsyncThunk('cart/addToCart', async (cartItemData, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_BASE_URL}/cart-items/`, cartItemData, {
+    const response = await axios.post(`${API_BASE_URL}cart-items/`, cartItemData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +34,7 @@ export const addToCart = createAsyncThunk('cart/addToCart', async (cartItemData,
 export const updateCartItem = createAsyncThunk('cart/updateCartItem', async ({ id, quantity }, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.put(`${API_BASE_URL}/cart-items/${id}/`, { quantity }, {
+    const response = await axios.put(`${API_BASE_URL}cart-items/${id}/`, { quantity }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -48,7 +48,7 @@ export const updateCartItem = createAsyncThunk('cart/updateCartItem', async ({ i
 export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (id, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    await axios.delete(`${API_BASE_URL}/cart-items/${id}/`, {
+    await axios.delete(`${API_BASE_URL}cart-items/${id}/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -62,7 +62,7 @@ export const removeFromCart = createAsyncThunk('cart/removeFromCart', async (id,
 export const clearCart = createAsyncThunk('cart/clearCart', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    await axios.delete(`${API_BASE_URL}/carts/`, {
+    await axios.delete(`${API_BASE_URL}carts/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

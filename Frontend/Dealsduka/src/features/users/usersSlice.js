@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api';
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api/';
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get(`${API_BASE_URL}/users/`, {
+    const response = await axios.get(`${API_BASE_URL}users/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -20,7 +20,7 @@ export const fetchUsers = createAsyncThunk('users/fetchUsers', async (_, { rejec
 export const createUser = createAsyncThunk('users/createUser', async (userData, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_BASE_URL}/users/`, userData, {
+    const response = await axios.post(`${API_BASE_URL}users/`, userData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +34,7 @@ export const createUser = createAsyncThunk('users/createUser', async (userData, 
 export const updateUser = createAsyncThunk('users/updateUser', async ({ id, userData }, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.put(`${API_BASE_URL}/users/${id}/`, userData, {
+    const response = await axios.put(`${API_BASE_URL}users/${id}/`, userData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -48,7 +48,7 @@ export const updateUser = createAsyncThunk('users/updateUser', async ({ id, user
 export const deleteUser = createAsyncThunk('users/deleteUser', async (id, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    await axios.delete(`${API_BASE_URL}/users/${id}/`, {
+    await axios.delete(`${API_BASE_URL}users/${id}/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

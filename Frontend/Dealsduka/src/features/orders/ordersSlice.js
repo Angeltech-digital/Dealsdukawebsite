@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api'; 
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api/';
 
 export const placeOrder = createAsyncThunk('orders/placeOrder', async (orderData, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_BASE_URL}/orders/`, orderData, {
+    const response = await axios.post(`${API_BASE_URL}orders/`, orderData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -20,7 +20,7 @@ export const placeOrder = createAsyncThunk('orders/placeOrder', async (orderData
 export const fetchOrders = createAsyncThunk('orders/fetchOrders', async (_, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.get(`${API_BASE_URL}/orders/`, {
+    const response = await axios.get(`${API_BASE_URL}orders/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -34,7 +34,7 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async (_, { re
 export const updateOrderStatus = createAsyncThunk('orders/updateOrderStatus', async ({ orderId, status }, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.patch(`${API_BASE_URL}/orders/${orderId}/`, { status }, {
+    const response = await axios.patch(`${API_BASE_URL}orders/${orderId}/`, { status }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -48,7 +48,7 @@ export const updateOrderStatus = createAsyncThunk('orders/updateOrderStatus', as
 export const checkout = createAsyncThunk('orders/checkout', async (checkoutData, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_BASE_URL}/checkout/`, checkoutData, {
+    const response = await axios.post(`${API_BASE_URL}checkout/`, checkoutData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

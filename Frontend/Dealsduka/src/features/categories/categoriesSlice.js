@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api';
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api/';
 
 export const fetchCategories = createAsyncThunk('categories/fetchCategories', async (_, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/categories/`);
+    const response = await axios.get(`${API_BASE_URL}categories/`);
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
@@ -15,7 +15,7 @@ export const fetchCategories = createAsyncThunk('categories/fetchCategories', as
 export const createCategory = createAsyncThunk('categories/createCategory', async (categoryData, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.post(`${API_BASE_URL}/categories/`, categoryData, {
+    const response = await axios.post(`${API_BASE_URL}categories/`, categoryData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -29,7 +29,7 @@ export const createCategory = createAsyncThunk('categories/createCategory', asyn
 export const updateCategory = createAsyncThunk('categories/updateCategory', async ({ id, categoryData }, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await axios.put(`${API_BASE_URL}/categories/${id}/`, categoryData, {
+    const response = await axios.put(`${API_BASE_URL}categories/${id}/`, categoryData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -43,7 +43,7 @@ export const updateCategory = createAsyncThunk('categories/updateCategory', asyn
 export const deleteCategory = createAsyncThunk('categories/deleteCategory', async (id, { rejectWithValue }) => {
   try {
     const token = localStorage.getItem('token');
-    await axios.delete(`${API_BASE_URL}/categories/${id}/`, {
+    await axios.delete(`${API_BASE_URL}categories/${id}/`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

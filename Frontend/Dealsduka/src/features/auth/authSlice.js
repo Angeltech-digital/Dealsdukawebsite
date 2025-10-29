@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api'; 
+const API_BASE_URL = 'https://dealsdukawebsite.onrender.com/api';
 
 export const login = createAsyncThunk('auth/login', async ({ email, password }, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/login/`, { email, password });
+    const response = await axios.post(`${API_BASE_URL}/login/`, { email, password });
     localStorage.setItem('token', response.data.token);
     return response.data;
   } catch (error) {
@@ -15,7 +15,7 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
 
 export const register = createAsyncThunk('auth/register', async ({ email, password, first_name, last_name }, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/auth/register/`, { email, password, first_name, last_name });
+    const response = await axios.post(`${API_BASE_URL}/register/`, { email, password, first_name, last_name });
     localStorage.setItem('token', response.data.token);
     return response.data;
   } catch (error) {
@@ -25,7 +25,7 @@ export const register = createAsyncThunk('auth/register', async ({ email, passwo
 
 export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
-    await axios.post(`${API_BASE_URL}/auth/logout/`);
+    await axios.post(`${API_BASE_URL}/logout/`);
     localStorage.removeItem('token');
     return {};
   } catch (error) {
