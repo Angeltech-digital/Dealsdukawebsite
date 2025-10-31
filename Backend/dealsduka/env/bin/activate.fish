@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/angela/Angelaprojects/code/Angela/Dealsduka/Backend/dealsduka/env
+set -gx VIRTUAL_ENV /home/packetelvis/Dealsdukawebsite/Backend/dealsduka/env
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

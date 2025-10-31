@@ -12,7 +12,19 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
+
+# Try to import dj-database-url, but don't fail if it's not available
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
+
+# Try to load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,6 +59,7 @@ INSTALLED_APPS += [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'drf_yasg',
     'accounts',
     'products',
 ]
@@ -93,25 +106,30 @@ WSGI_APPLICATION = 'dealsduka.wsgi.application'
 
 DJANGO_ENV = os.environ.get('DJANGO_ENV', 'development')
 
+# Default to SQLite for development
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    },
-    'external_db': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dealsduka',
-        'USER': 'angela',
-        'PASSWORD': 'clareAdam24',
-        'HOST': 'localhost',
-        'PORT': '5432',
     }
 }
 
+# Only try to use PostgreSQL in production
 if DJANGO_ENV == 'production':
-    _db_config = dj_database_url.config(conn_max_age=600)
-    if _db_config:
-        DATABASES['external_db'] = _db_config
+    if dj_database_url and 'DATABASE_URL' in os.environ:
+        DATABASES['default'] = dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    elif os.environ.get('DB_NAME'):
+        DATABASES['default'] = {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'dealsduka'),
+            'USER': os.environ.get('DB_USER', 'postgres'),
+            'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+            'HOST': os.environ.get('DB_HOST', 'localhost'),
+            'PORT': os.environ.get('DB_PORT', '5432'),
+        }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

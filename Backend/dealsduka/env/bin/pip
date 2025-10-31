@@ -1,4 +1,4 @@
-#!/home/angela/Angelaprojects/code/Angela/Dealsduka/Backend/dealsduka/env/bin/python3.13
+#!/home/packetelvis/Dealsdukawebsite/Backend/dealsduka/env/bin/python3
 import sys
 from pip._internal.cli.main import main
 if __name__ == '__main__':
