@@ -41,6 +41,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-aq0vu6(7q@j-(x_d(u_$e
 DEBUG = True
 
 ALLOWED_HOSTS = ['.onrender.com', 'localhost']
+# ALLOWED_HOSTS = ["dealsdukawebsite.onrender.com", "localhost", "127.0.0.1"]
+
 
 
 # Application definition
