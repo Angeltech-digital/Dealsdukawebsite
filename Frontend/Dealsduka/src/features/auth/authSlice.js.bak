@@ -73,6 +73,20 @@ export const fetchProfile = createAsyncThunk('auth/fetchProfile', async (_, { re
   }
 });
 
+export const updateProfile = createAsyncThunk('auth/updateProfile', async (profileData, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.put(`${API_BASE_URL}/api/auth/profile/`, profileData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
 const initialState = {
   user: null,
   token: localStorage.getItem('token'),
@@ -88,7 +102,7 @@ const authSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -101,7 +115,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.access;
         state.refreshToken = action.payload.refresh;
-        state.isAdmin = action.payload.user?.is_staff || action.payload.user?.is_superuser;
+        state.isAdmin = action.payload.user?.is_staff || false;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -116,7 +130,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.access;
         state.refreshToken = action.payload.refresh;
-        state.isAdmin = action.payload.user?.is_staff || action.payload.user?.is_superuser;
+        state.isAdmin = action.payload.user?.is_staff || false;
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -128,16 +142,39 @@ const authSlice = createSlice({
         state.refreshToken = null;
         state.isAdmin = false;
       })
+      .addCase(logout.rejected, (state) => {
+        state.user = null;
+        state.token = null;
+        state.refreshToken = null;
+        state.isAdmin = false;
+      })
+      .addCase(fetchProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
       .addCase(fetchProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.user = action.payload;
-        state.isAdmin = action.payload.is_staff || action.payload.is_superuser;
+        state.isAdmin = action.payload?.is_staff || false;
+      })
+      .addCase(fetchProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
       });
-  },
+  }
 });
 
 export const { clearError } = authSlice.actions;
-
-// Export the reducer as both default and named export
-const authReducer = authSlice.reducer;
-export { authReducer };
-export default authReducer;
+export default authSlice.reducer;
