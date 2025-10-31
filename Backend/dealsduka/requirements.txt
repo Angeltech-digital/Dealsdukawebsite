@@ -8,4 +8,5 @@ drf-yasg==1.21.7
 
 dj-database-url==1.0.0
 whitenoise==6.5.0
+pip install drf-yasg
 
