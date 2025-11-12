@@ -15,6 +15,7 @@ from .permissions import IsAdmin, IsAdminOrReadOnly
 from products.models import Category
 from products.serializers import CategorySerializer
 from products.views import CategoryViewSet  # Import from products views instead
+from django.contrib.auth import authenticate
 
 User = get_user_model()
 
@@ -33,6 +34,40 @@ class RegisterView(generics.CreateAPIView):
             'access': str(refresh.access_token),
             'refresh': str(refresh),
         }, status=status.HTTP_201_CREATED)
+
+
+class LoginView(APIView):
+    """Custom login view that accepts email and password and returns tokens plus user data.
+
+    This keeps the frontend simple (it posts email/password) and returns the same
+    response shape as RegisterView: { user, access, refresh }.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        if not email or not password:
+            return Response({'detail': 'Email and password are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Try to find the user by email (case-insensitive)
+        try:
+            user = User.objects.get(email__iexact=email)
+        except User.DoesNotExist:
+            return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if not user.check_password(password):
+            return Response({'detail': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+        refresh = RefreshToken.for_user(user)
+        user_data = UserSerializer(user).data
+
+        return Response({
+            'user': user_data,
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+        }, status=status.HTTP_200_OK)
 
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
