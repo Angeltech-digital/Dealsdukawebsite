@@ -33,6 +33,17 @@ const Register = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // simple client-side validation
+    if (formData.password !== formData.password_confirm) {
+      // dispatch an explicit error shape to the slice
+      dispatch({ type: 'auth/clearError' });
+      // We don't have a direct action to set error — use local state fallback by reusing existing error display via store
+      // Instead, throw a rejected action by dispatching register with a rejectable promise? Simpler: set a window alert and return.
+      // For now, show a browser alert and stop submission
+      alert('Passwords do not match');
+      return;
+    }
+
     dispatch(register(formData));
   };
 
@@ -114,9 +125,19 @@ const Register = () => {
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <p className="text-red-600 text-sm text-center font-medium">
-                {error.detail || 'Registration failed. Please try again.'}
-              </p>
+              {typeof error === 'string' && (
+                <p className="text-red-600 text-sm text-center font-medium">{error}</p>
+              )}
+              {error.detail && (
+                <p className="text-red-600 text-sm text-center font-medium">{error.detail}</p>
+              )}
+              {typeof error === 'object' && !error.detail && (
+                <div className="space-y-1">
+                  {Object.entries(error).map(([key, value]) => (
+                    <p key={key} className="text-red-600 text-sm text-center font-medium">{Array.isArray(value) ? value.join(' ') : String(value)}</p>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

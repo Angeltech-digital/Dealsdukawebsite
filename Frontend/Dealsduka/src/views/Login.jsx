@@ -73,9 +73,19 @@ const Login = () => {
 
           {error && (
             <div className="bg-red-500/20 border border-red-400/30 rounded-xl p-4">
-              <p className="text-red-300 text-sm text-center font-medium">
-                {error.detail || 'Login failed. Please try again.'}
-              </p>
+              {typeof error === 'string' && (
+                <p className="text-red-300 text-sm text-center font-medium">{error}</p>
+              )}
+              {error.detail && (
+                <p className="text-red-300 text-sm text-center font-medium">{error.detail}</p>
+              )}
+              {typeof error === 'object' && !error.detail && (
+                <div className="space-y-1">
+                  {Object.entries(error).map(([key, value]) => (
+                    <p key={key} className="text-red-300 text-sm text-center font-medium">{Array.isArray(value) ? value.join(' ') : String(value)}</p>
+                  ))}
+                </div>
+              )}
             </div>
           )}
 

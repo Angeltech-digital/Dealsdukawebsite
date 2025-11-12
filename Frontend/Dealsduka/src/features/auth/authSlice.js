@@ -6,11 +6,18 @@ const API_BASE_URL = 'http://127.0.0.1:8000';
 export const login = createAsyncThunk('auth/login', async ({ email, password }, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/api/auth/login/`, { email, password });
+    // persist tokens
     localStorage.setItem('token', response.data.access);
     localStorage.setItem('refreshToken', response.data.refresh);
+    // set default header for subsequent requests
+    axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    // Normalize error shape: could be {detail: '...'} or {field: ['...']} or other
+    if (!error.response) return rejectWithValue({ detail: 'Network error' });
+    const data = error.response.data;
+    if (data.detail) return rejectWithValue({ detail: data.detail });
+    return rejectWithValue(data);
   }
 });
 
@@ -24,9 +31,13 @@ export const register = createAsyncThunk('auth/register', async ({ email, passwo
     });
     localStorage.setItem('token', response.data.access);
     localStorage.setItem('refreshToken', response.data.refresh);
+    axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
     return response.data;
   } catch (error) {
-    return rejectWithValue(error.response.data);
+    if (!error.response) return rejectWithValue({ detail: 'Network error' });
+    const data = error.response.data;
+    if (data.detail) return rejectWithValue({ detail: data.detail });
+    return rejectWithValue(data);
   }
 });
 
