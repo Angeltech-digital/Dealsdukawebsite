@@ -21,13 +21,15 @@ export const login = createAsyncThunk('auth/login', async ({ email, password }, 
   }
 });
 
-export const register = createAsyncThunk('auth/register', async ({ email, password, password_confirm, username }, { rejectWithValue }) => {
+export const register = createAsyncThunk('auth/register', async ({ email, password, password_confirm, username, phone_number, address }, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/api/auth/register/`, { 
       email, 
       password, 
       password_confirm,
-      username
+      username,
+      phone_number: phone_number || '',
+      address: address || ''
     });
     localStorage.setItem('token', response.data.access);
     localStorage.setItem('refreshToken', response.data.refresh);

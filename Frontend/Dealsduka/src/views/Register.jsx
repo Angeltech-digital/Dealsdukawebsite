@@ -9,6 +9,8 @@ const Register = () => {
     username: '',
     password: '',
     password_confirm: '',
+    phone_number: '',
+    address: '',
   });
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -44,7 +46,14 @@ const Register = () => {
       return;
     }
 
-    dispatch(register(formData));
+    dispatch(register({
+      email: formData.email,
+      password: formData.password,
+      password_confirm: formData.password_confirm,
+      username: formData.username,
+      phone_number: formData.phone_number,
+      address: formData.address,
+    }));
   };
 
   return (
@@ -118,6 +127,34 @@ const Register = () => {
                 className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-deals-orange focus:border-transparent transition-all duration-300"
                 placeholder="Confirm your password"
                 value={formData.password_confirm}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-1">
+                Phone Number (optional)
+              </label>
+              <input
+                id="phone_number"
+                name="phone_number"
+                type="tel"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-deals-green focus:border-transparent transition-all duration-300"
+                placeholder="+1234567890"
+                value={formData.phone_number}
+                onChange={handleChange}
+              />
+            </div>
+            <div>
+              <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
+                Address (optional)
+              </label>
+              <input
+                id="address"
+                name="address"
+                type="text"
+                className="appearance-none relative block w-full px-4 py-3 border-2 border-gray-200 rounded-xl placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-deals-purple focus:border-transparent transition-all duration-300"
+                placeholder="Your address"
+                value={formData.address}
                 onChange={handleChange}
               />
             </div>
